@@ -8,12 +8,14 @@ static void Main(string[] args)
             bool continuar = true;
             while (continuar)
             {
+                Console.Clear();
                 MostrarMenu();
                 string opcion = Console.ReadLine();
 
                 switch (opcion)
                 {
                     case "1":
+                        Console.Clear();
                         Console.WriteLine("1. Registro de solicitudes");
 
                         //requerimiento 2 solicitar y validar datos del usuario para registrar una solicitud
@@ -26,23 +28,36 @@ static void Main(string[] args)
                         Console.WriteLine("3. Trámite");
                         int tipoSolicitud=leerOpcionNumerica("Seleccione una opción (1-3):", 1, 3);
 
-                        Console.WriteLine($"Código ingresado: {codigo}");
+                        string nombreTipo=obtenerNombreTipoSolicitud(tipoSolicitud);
+
+                        //requerimiento 6 descripción de la solicitud
+                        string descripcion=leerTextoObligatorio("Ingrese la descripción de la solicitud (mínimo 10 caracteres):", 10);
+
+                        Console.Clear();
+                        Console.WriteLine($"Solicitud registrada con éxito");
+                        Console.WriteLine($"Código del estudiante: {codigo}");
+                        Console.WriteLine($"Tipo de solicitud: {nombreTipo}");
+                        Console.WriteLine($"Descripción: {descripcion}");
+                        Console.ReadKey();
                         break;
                     case "2":
+                        Console.Clear();
                         Console.WriteLine("2. Ver solicitudes registradas");
                         break;
                     case "3":
                         continuar = false;
-                        Console.WriteLine("3. Saliendo del programa");
+                        Console.WriteLine("3. Saliendo del programa...");
+                        Console.ReadKey();
                         break;
                     default:
                         Console.WriteLine("Opción no válida. Intente nuevamente.");
+                        Console.ReadKey();
                         break;
                 }
             }
         }
 
-        //Funcion 4 sin retorno: mostrar menú de opciones y permitir al usuario seleccionar una opción
+        //Requerimiento 4 sin retorno: mostrar menú de opciones y permitir al usuario seleccionar una opción
         static void MostrarMenu()
         {
             Console.WriteLine("Seleccione una opción:");
@@ -51,23 +66,7 @@ static void Main(string[] args)
             Console.WriteLine("3. Salir del programa");
         }
 
-        //funcion 6 con retorno, validar que el texto ingresado por el usuario cumpla con un mínimo de caracteres
-        static string leerTextoObligatorio(string mensaje, int longitudMinima)
-        {
-            string texto = "";
-            do
-            {
-                Console.WriteLine(mensaje);
-                texto = Console.ReadLine() ?? "";
-                if (string.IsNullOrWhiteSpace(texto) || texto.Length < longitudMinima)
-                {
-                    Console.WriteLine($"¡Error! El texto debe tener al menos {longitudMinima} caracteres. Intente nuevamente.");
-                }
-            } while (string.IsNullOrWhiteSpace(texto) || texto.Length < longitudMinima);
-            return texto;
-        }
-
-        //Validar codigo de estudiante
+        //Requerimiento 2 con retorno, validar que el usuario ingrese un código de estudiante con formato específico
         static string leerCodigoEstudiante(string mensaje)
         {
             string codigo = "";
@@ -101,5 +100,39 @@ static void Main(string[] args)
             } while (!esValido);
             return opcion;
         }
+        //requerimiento 6 con retorno validar texto ingresado por el usuario, que no sea vacío y que no contenga caracteres especiales
+        static string leerTextoObligatorio(string mensaje, int longitudMinima)
+        {
+            string texto = "";
+            bool esValido;
+            do
+            {
+                Console.WriteLine(mensaje);
+                texto = Console.ReadLine() ?? "";
+                esValido = !string.IsNullOrWhiteSpace(texto) && texto.Length >= longitudMinima && System.Text.RegularExpressions.Regex.IsMatch(texto, @"^[a-zA-Z0-9\s]+$");
+                if (!esValido)
+                {
+                    Console.WriteLine($"¡Error! El texto no puede estar vacío, debe tener al menos {longitudMinima} caracteres y no puede contener caracteres especiales. Intente nuevamente.");
+                }
+            } while (!esValido);
+            return texto;
+        }
+
+        //Pequeño arreglo para mostrar el nombre del tipo de solicitud según la opción seleccionada
+        static string obtenerNombreTipoSolicitud(int tipoSolicitud)
+        {
+            switch (tipoSolicitud)
+            {
+                case 1:
+                    return "Consulta";
+                case 2:
+                    return "Reclamo";
+                case 3:
+                    return "Trámite";
+                default:
+                    return "Desconocido";
+            }
+        }
+
     }
 }
