@@ -6,11 +6,18 @@ namespace SoporteAcademico
 static void Main(string[] args)
         {
             bool continuar = true;
+            int maxSolicitudes = 100; // Definir un límite máximo de solicitudes
+            string [] codigosEstudiantes = new string[maxSolicitudes];
+            string [] tiposSolicitudes = new string[maxSolicitudes];
+            string [] prioridadesSolicitudes = new string[maxSolicitudes];
+            string [] descripcionesSolicitudes = new string[maxSolicitudes];
+            int cantidadSolicitudes = 0; // Contador de solicitudes registradas
+
             while (continuar)
             {
                 Console.Clear();
                 MostrarMenu();
-                string opcion = Console.ReadLine();
+                string opcion = Console.ReadLine() ?? "";
 
                 switch (opcion)
                 {
@@ -35,11 +42,21 @@ static void Main(string[] args)
                         //requerimiento 6 descripción de la solicitud
                         string descripcion=leerTextoObligatorio("Ingrese la descripción de la solicitud (mínimo 10 caracteres):", 10);
 
+                        if (cantidadSolicitudes < maxSolicitudes)
+                        {
+                            codigosEstudiantes[cantidadSolicitudes] = codigo;
+                            tiposSolicitudes[cantidadSolicitudes] = nombreTipo;
+                            prioridadesSolicitudes[cantidadSolicitudes] = prioridad;
+                            descripcionesSolicitudes[cantidadSolicitudes] = descripcion;
+                            cantidadSolicitudes++;
+                        }
+
                         mostrarResumenSolicitud(codigo, nombreTipo, prioridad, descripcion);
                         break;
                     case "2":
                         Console.Clear();
                         Console.WriteLine("2. Ver solicitudes registradas");
+                        mostrarListadoSolicitudes(codigosEstudiantes, tiposSolicitudes, prioridadesSolicitudes, descripcionesSolicitudes, cantidadSolicitudes);
                         break;
                     case "3":
                         continuar = false;
@@ -67,7 +84,6 @@ static void Main(string[] args)
         static string leerCodigoEstudiante(string mensaje)
         {
             string codigo = "";
-            bool esValido=false;
             do
             {
                 Console.WriteLine(mensaje);
@@ -145,6 +161,7 @@ static void Main(string[] args)
                         return "Desconocida";
                 }
             }
+            //Requerimiento 7 sin retorno, mostrar un resumen de la solicitud ingresada por el usuario
             static void mostrarResumenSolicitud(string codigo, string tipoSolicitud, string prioridad, string descripcion)
             {
                 Console.Clear();
@@ -155,5 +172,29 @@ static void Main(string[] args)
                 Console.WriteLine($"Descripción: {descripcion}");
                 Console.ReadKey();
             }
+    //requerimiento 8 sin retorno, mostrar un listado de todas las solicitudes registradas por el usuario
+    static void mostrarListadoSolicitudes(string [] codigosEstudiantes, string [] tiposSolicitudes, string [] prioridadesSolicitudes, string [] descripcionesSolicitudes, int cantidadSolicitudes)
+    {
+        Console.Clear();
+        Console.WriteLine("Listado de solicitudes registradas:");
+        if (cantidadSolicitudes == 0)
+        {
+            Console.WriteLine("No hay solicitudes registradas.");
+        }
+        else
+        {
+            for (int i = 0; i < cantidadSolicitudes; i++)
+            {
+                Console.WriteLine($"Solicitud {i + 1}:");
+                Console.WriteLine($"Código del estudiante: {codigosEstudiantes[i]}");
+                Console.WriteLine($"Tipo de solicitud: {tiposSolicitudes[i]}");
+                Console.WriteLine($"Prioridad: {prioridadesSolicitudes[i]}");
+                Console.WriteLine($"Descripción: {descripcionesSolicitudes[i]}");
+                Console.WriteLine("-----------------------------");
+            }
+        }
+        Console.WriteLine("Presione cualquier tecla para volver al menú...");
+        Console.ReadKey();
+    }
     }
 }
