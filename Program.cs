@@ -6,6 +6,8 @@ namespace SoporteAcademico
 static void Main(string[] args)
         {
             bool continuar = true;
+
+            //Requerimiento 8: Definir arreglos para almacenar los datos de las solicitudes
             int maxSolicitudes = 100; // Definir un límite máximo de solicitudes
             string [] codigosEstudiantes = new string[maxSolicitudes];
             string [] tiposSolicitudes = new string[maxSolicitudes];
@@ -38,10 +40,13 @@ static void Main(string[] args)
 
                         string nombreTipo=obtenerNombreTipoSolicitud(tipoSolicitud);
 
+                        //reqyuerimiento 5 calcular la prioridad de la solicitud según el tipo de solicitud
                         string prioridad=calcularPrioridadSolicitud(tipoSolicitud);
+
                         //requerimiento 6 descripción de la solicitud
                         string descripcion=leerTextoObligatorio("Ingrese la descripción de la solicitud (mínimo 10 caracteres):", 10);
 
+                        //arreglos paralelos
                         if (cantidadSolicitudes < maxSolicitudes)
                         {
                             codigosEstudiantes[cantidadSolicitudes] = codigo;
@@ -51,11 +56,11 @@ static void Main(string[] args)
                             cantidadSolicitudes++;
                         }
 
+                        //requerimiento 7 mostrar un resumen de la solicitud ingresada por el usuario
                         mostrarResumenSolicitud(codigo, nombreTipo, prioridad, descripcion);
                         break;
                     case "2":
-                        Console.Clear();
-                        Console.WriteLine("2. Ver solicitudes registradas");
+                        //requerimiento 8 mostrar un listado de todas las solicitudes registradas por el usuario
                         mostrarListadoSolicitudes(codigosEstudiantes, tiposSolicitudes, prioridadesSolicitudes, descripcionesSolicitudes, cantidadSolicitudes);
                         break;
                     case "3":
