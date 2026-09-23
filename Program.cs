@@ -14,6 +14,7 @@ static void Main(string[] args)
 
                 switch (opcion)
                 {
+                    //requerimiento 1 mostrar menú de opciones y permitir al usuario seleccionar una opción
                     case "1":
                         Console.Clear();
                         Console.WriteLine("1. Registro de solicitudes");
@@ -30,15 +31,11 @@ static void Main(string[] args)
 
                         string nombreTipo=obtenerNombreTipoSolicitud(tipoSolicitud);
 
+                        string prioridad=calcularPrioridadSolicitud(tipoSolicitud);
                         //requerimiento 6 descripción de la solicitud
                         string descripcion=leerTextoObligatorio("Ingrese la descripción de la solicitud (mínimo 10 caracteres):", 10);
 
-                        Console.Clear();
-                        Console.WriteLine($"Solicitud registrada con éxito");
-                        Console.WriteLine($"Código del estudiante: {codigo}");
-                        Console.WriteLine($"Tipo de solicitud: {nombreTipo}");
-                        Console.WriteLine($"Descripción: {descripcion}");
-                        Console.ReadKey();
+                        mostrarResumenSolicitud(codigo, nombreTipo, prioridad, descripcion);
                         break;
                     case "2":
                         Console.Clear();
@@ -133,6 +130,30 @@ static void Main(string[] args)
                     return "Desconocido";
             }
         }
-
+        //requerimiento 5 con retorno, calcular la prioridad de la solicitud según el tipo de solicitud
+        static string calcularPrioridadSolicitud(int tipoSolicitud)
+            {
+                switch (tipoSolicitud)
+                {
+                    case 1:
+                        return "Baja";
+                    case 3:
+                        return "Media";
+                    case 2:
+                        return "Alta";
+                    default:
+                        return "Desconocida";
+                }
+            }
+            static void mostrarResumenSolicitud(string codigo, string tipoSolicitud, string prioridad, string descripcion)
+            {
+                Console.Clear();
+                Console.WriteLine($"Resumen de la solicitud:");
+                Console.WriteLine($"Código del estudiante: {codigo}");
+                Console.WriteLine($"Tipo de solicitud: {tipoSolicitud}");
+                Console.WriteLine($"Prioridad: {prioridad}");
+                Console.WriteLine($"Descripción: {descripcion}");
+                Console.ReadKey();
+            }
     }
 }
