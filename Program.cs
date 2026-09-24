@@ -127,10 +127,10 @@ static void Main(string[] args)
             {
                 Console.WriteLine(mensaje);
                 texto = Console.ReadLine() ?? "";
-                esValido = !string.IsNullOrWhiteSpace(texto) && texto.Length >= longitudMinima && System.Text.RegularExpressions.Regex.IsMatch(texto, @"^[a-zA-Z0-9\s]+$");
+                esValido = !string.IsNullOrWhiteSpace(texto) && texto.Length >= longitudMinima;
                 if (!esValido)
                 {
-                    Console.WriteLine($"¡Error! El texto no puede estar vacío, debe tener al menos {longitudMinima} caracteres y no puede contener caracteres especiales. Intente nuevamente.");
+                    Console.WriteLine($"¡Error! El texto no puede estar vacío y debe tener al menos {longitudMinima} caracteres. Intente nuevamente.");
                 }
             } while (!esValido);
             return texto;
